@@ -9,7 +9,7 @@
 import UIKit
 
 class HNavigationController: UINavigationController {
-    override func childViewControllerForStatusBarStyle() -> UIViewController? {
+    override var childViewControllerForStatusBarStyle : UIViewController? {
         return self.topViewController
     }
 }
@@ -31,8 +31,8 @@ class XManCollectionViewController: UICollectionViewController {
          self.clearsSelectionOnViewWillAppear = false
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
     }
 }
 
@@ -51,9 +51,9 @@ extension XManCollectionViewController {
     }
     
     func configCollectionLayout() {
-        let itemWidth = (UIScreen.mainScreen().bounds.width - 60) / 2
+        let itemWidth = (UIScreen.main.bounds.width - 60) / 2
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: itemWidth, height: itemWidth * 1.5)
+        layout.itemSize = CGSize(width: itemWidth, height: itemWidth / 3.0 * 4.0 + 30)
         layout.minimumLineSpacing = 20
         layout.minimumInteritemSpacing = 20
         layout.sectionInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
@@ -63,13 +63,13 @@ extension XManCollectionViewController {
 
 // MARK: UICollectionViewDataSource
 extension XManCollectionViewController {
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
         return dataArray.count
     }
     
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! XManCollectionViewCell
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! XManCollectionViewCell
         cell.movie = dataArray[indexPath.row]
         return cell
     }
@@ -78,20 +78,20 @@ extension XManCollectionViewController {
 
 // MARK: UICollectionViewDelegate
 extension XManCollectionViewController {
-    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        let detailVC = UIStoryboard(name: "XMain", bundle: nil).instantiateViewControllerWithIdentifier("XManDetailViewController") as! XManDetailViewController
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let detailVC = UIStoryboard(name: "XMain", bundle: nil).instantiateViewController(withIdentifier: "XManDetailViewController") as! XManDetailViewController
         let animator = CustomTransitioningAnimator()
-        selectedCell = collectionView.cellForItemAtIndexPath(indexPath) as! XManCollectionViewCell
+        selectedCell = collectionView.cellForItem(at: indexPath) as! XManCollectionViewCell
         detailVC.dataModel = dataArray[indexPath.row]
-        detailVC.modalPresentationStyle = UIModalPresentationStyle.Custom
+        detailVC.modalPresentationStyle = UIModalPresentationStyle.custom
         detailVC.transitioningDelegate = animator
         detailVC.delegate = self
-        self.presentViewController(detailVC, animated: true, completion: nil)
+        self.present(detailVC, animated: true, completion: nil)
     }
 }
 
 extension XManCollectionViewController: CustomTransitioningDelegate {
     func dismissPresentViewController() {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
 }

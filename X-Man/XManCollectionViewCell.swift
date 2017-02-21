@@ -32,14 +32,14 @@ class XManCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         viewRateBack.layer.shouldRasterize = true
-        viewRateBack.layer.rasterizationScale = UIScreen.mainScreen().scale
+        viewRateBack.layer.rasterizationScale = UIScreen.main.scale
         imgPoster.clipsToBounds = true
         self.layer.cornerRadius = 10
         self.clipsToBounds = true
-        viewRateBack.layer.shadowColor = UIColor.blackColor().CGColor
+        viewRateBack.layer.shadowColor = UIColor.black.cgColor
         viewRateBack.layer.shadowRadius = 30
         viewRateBack.layer.shadowOpacity = 0.5
-        contentView.bringSubviewToFront(lbName)
-        contentView.bringSubviewToFront(lbCountry)
+        contentView.bringSubview(toFront: lbName)
+        contentView.bringSubview(toFront: lbCountry)
     }
 }
